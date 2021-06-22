@@ -1,24 +1,55 @@
 package cinema;
 
-public class Cinema {
-    private static void print(int[][] cinema) {
+import java.util.Scanner;
+class CinemaRoom {
+    private int rows;
+    private int seats;
+    private int[][] chairs;
+    private final Scanner sc;
+    private  int total;
+    public CinemaRoom(Scanner sc) {
+        this.sc = sc;
+        System.out.println("Enter the number of rows:");
+        rows = sc.nextInt();
+        System.out.println("Enter the number of seats in each row:");
+        seats = sc.nextInt();
+        total = rows * seats;
+    }
+    public void print() {
         System.out.println("Cinema:");
         System.out.print("  ");
-        for (int i = 1; i <= cinema[0].length; i++) {
+        for (int i = 1; i <= chairs[0].length; i++) {
             System.out.print(i + " ");
         }
         System.out.println();
-        for (int i = 0; i < cinema.length; i++) {
+        for (int i = 0; i < chairs.length; i++) {
             System.out.print(i + 1 + " ");
-            for (int j = 0; j < cinema[i].length; j++) {
+            for (int j = 0; j < chairs[i].length; j++) {
                 System.out.print("S ");
             }
             System.out.println();
         }
     }
+    private int getPrice() {
+        if (total < 60) {
+            return total * 10;
+        } else {
+            int half = rows / 2;
+            return half * seats * 10 + (rows - half) * seats * 8;
+        }
+    }
+    public void printPrice() {
+        System.out.println("Total income: ");
+        System.out.println("$" + getPrice());
+    }
+}
+public class Cinema {
+
+
     public static void main(String[] args) {
         // Write your code here
-        int[][] mat = new int[7][8];
-        print(mat);
+        Scanner sc = new Scanner(System.in);
+        CinemaRoom cinemaRoom = new CinemaRoom(sc);
+        cinemaRoom.printPrice();
     }
 }
