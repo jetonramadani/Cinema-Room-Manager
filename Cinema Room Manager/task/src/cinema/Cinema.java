@@ -2,12 +2,12 @@ package cinema;
 
 import java.util.Scanner;
 class CinemaRoom {
-    private int rows;
-    private int seats;
-    private boolean[][] chairs;
+    private final int rows;
+    private final int seats;
+    private final boolean[][] chairs;
     private final Scanner sc;
-    private int total;
-    private int half;
+    private final int total;
+    private final int half;
     public CinemaRoom(Scanner sc) {
         this.sc = sc;
         System.out.println("Enter the number of rows:");
@@ -22,13 +22,13 @@ class CinemaRoom {
     public void print() {
         System.out.println("Cinema:");
         System.out.print("  ");
-        for (int i = 1; i <= chairs[0].length; i++) {
+        for (int i = 1; i <= seats; i++) {
             System.out.print(i + " ");
         }
         System.out.println();
-        for (int i = 0; i < chairs.length; i++) {
+        for (int i = 0; i < rows; i++) {
             System.out.print(i + 1 + " ");
-            for (int j = 0; j < chairs[i].length; j++) {
+            for (int j = 0; j < seats; j++) {
                 System.out.print(chairs[i][j] ? "B " : "S ");
             }
             System.out.println();
