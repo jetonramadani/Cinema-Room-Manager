@@ -4,9 +4,10 @@ import java.util.Scanner;
 class CinemaRoom {
     private int rows;
     private int seats;
-    private int[][] chairs;
+    private boolean[][] chairs;
     private final Scanner sc;
-    private  int total;
+    private int total;
+    private int half;
     public CinemaRoom(Scanner sc) {
         this.sc = sc;
         System.out.println("Enter the number of rows:");
@@ -14,6 +15,9 @@ class CinemaRoom {
         System.out.println("Enter the number of seats in each row:");
         seats = sc.nextInt();
         total = rows * seats;
+        chairs = new boolean[rows][seats];
+        half = rows / 2;
+        print();
     }
     public void print() {
         System.out.println("Cinema:");
@@ -25,22 +29,29 @@ class CinemaRoom {
         for (int i = 0; i < chairs.length; i++) {
             System.out.print(i + 1 + " ");
             for (int j = 0; j < chairs[i].length; j++) {
-                System.out.print("S ");
+                System.out.print(chairs[i][j] ? "B " : "S ");
             }
             System.out.println();
         }
     }
-    private int getPrice() {
+    public void arrangeChair() {
+        System.out.println("Enter a row number:");
+        int r = sc.nextInt();
+        System.out.println("Enter a seat number in that row:");
+        int s = sc.nextInt();
+        chairs[r - 1][s - 1] = true;
+        System.out.println(chairs[r - 1][s - 1]);
+        printPrice(r);
+    }
+    private int getPrice(int row) {
         if (total < 60) {
-            return total * 10;
+            return 10;
         } else {
-            int half = rows / 2;
-            return half * seats * 10 + (rows - half) * seats * 8;
+            return row <= half ? 10 : 8;
         }
     }
-    public void printPrice() {
-        System.out.println("Total income: ");
-        System.out.println("$" + getPrice());
+    public void printPrice(int row) {
+        System.out.println("Ticket price: $" + getPrice(row));
     }
 }
 public class Cinema {
@@ -50,6 +61,7 @@ public class Cinema {
         // Write your code here
         Scanner sc = new Scanner(System.in);
         CinemaRoom cinemaRoom = new CinemaRoom(sc);
-        cinemaRoom.printPrice();
+        cinemaRoom.arrangeChair();
+        cinemaRoom.print();
     }
 }
