@@ -19,7 +19,7 @@ class CinemaRoom {
         half = rows / 2;
         print();
     }
-    public void print() {
+    private void print() {
         System.out.println("Cinema:");
         System.out.print("  ");
         for (int i = 1; i <= seats; i++) {
@@ -34,7 +34,7 @@ class CinemaRoom {
             System.out.println();
         }
     }
-    public void arrangeChair() {
+    private void arrangeChair() {
         System.out.println("Enter a row number:");
         int r = sc.nextInt();
         System.out.println("Enter a seat number in that row:");
@@ -50,8 +50,27 @@ class CinemaRoom {
             return row <= half ? 10 : 8;
         }
     }
-    public void printPrice(int row) {
+    private void printPrice(int row) {
         System.out.println("Ticket price: $" + getPrice(row));
+    }
+    public void run() {
+        int selection = -1;
+        do {
+            System.out.println("1. Show the seats\n" +
+                    "2. Buy a ticket\n" +
+                    "0. Exit");
+            selection = sc.nextInt();
+            switch (selection) {
+                case 1:
+                    print();
+                    break;
+                case 2:
+                    arrangeChair();
+                    break;
+                default:
+                    break;
+            }
+        } while (selection > 0 && selection <= 2);
     }
 }
 public class Cinema {
@@ -61,7 +80,6 @@ public class Cinema {
         // Write your code here
         Scanner sc = new Scanner(System.in);
         CinemaRoom cinemaRoom = new CinemaRoom(sc);
-        cinemaRoom.arrangeChair();
-        cinemaRoom.print();
+        cinemaRoom.run();
     }
 }
