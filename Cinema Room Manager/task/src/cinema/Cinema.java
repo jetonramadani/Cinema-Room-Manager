@@ -8,6 +8,9 @@ class CinemaRoom {
     private final Scanner sc;
     private final int total;
     private final int half;
+    private int sold;
+    private int currentIncome;
+    private final int totalIncome;
     public CinemaRoom(Scanner sc) {
         this.sc = sc;
         System.out.println("Enter the number of rows:");
@@ -18,6 +21,12 @@ class CinemaRoom {
         chairs = new boolean[rows][seats];
         half = rows / 2;
         print();
+        sold = currentIncome = 0;
+        if (total < 60) {
+            totalIncome = total * 10;
+        } else {
+            totalIncome = half * seats * 10 + (rows - half) * seats * 8;
+        }
     }
     private void print() {
         System.out.println("Cinema:");
@@ -35,13 +44,24 @@ class CinemaRoom {
         }
     }
     private void arrangeChair() {
-        System.out.println("Enter a row number:");
-        int r = sc.nextInt();
-        System.out.println("Enter a seat number in that row:");
-        int s = sc.nextInt();
-        chairs[r - 1][s - 1] = true;
-        System.out.println(chairs[r - 1][s - 1]);
-        printPrice(r);
+        while(true) {
+            System.out.println("Enter a row number:");
+            int r = sc.nextInt();
+            System.out.println("Enter a seat number in that row:");
+            int s = sc.nextInt();
+            try {
+                if (!chairs[r - 1][s - 1]) {
+                    chairs[r - 1][s - 1] = true;
+                    ++sold;
+                    printPrice(r);
+                    break;
+                } else {
+                    System.out.println("That ticket has already been purchased");
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("Wrong input!");
+            }
+        }
     }
     private int getPrice(int row) {
         if (total < 60) {
@@ -51,13 +71,16 @@ class CinemaRoom {
         }
     }
     private void printPrice(int row) {
-        System.out.println("Ticket price: $" + getPrice(row));
+        int price = getPrice(row);
+        currentIncome += price;
+        System.out.println("Ticket price: $" + price);
     }
     public void run() {
-        int selection = -1;
+        int selection;
         do {
             System.out.println("1. Show the seats\n" +
                     "2. Buy a ticket\n" +
+                    "3. Statistics\n" +
                     "0. Exit");
             selection = sc.nextInt();
             switch (selection) {
@@ -67,10 +90,21 @@ class CinemaRoom {
                 case 2:
                     arrangeChair();
                     break;
+                case 3:
+                    statistics();
+                    break;
                 default:
                     break;
             }
-        } while (selection > 0 && selection <= 2);
+        } while (selection != 0);
+    }
+
+    private void statistics() {
+        System.out.printf("Number of purchased tickets: %d%n" +
+                "Percentage: %.2f%%%n" +
+                "Current income: $%d%n" +
+                "Total income: $%d%n",
+                sold, 100. * sold / total, currentIncome, totalIncome);
     }
 }
 public class Cinema {
